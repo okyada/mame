@@ -21,7 +21,7 @@ function App() {
     <>
       <div className="calculator">
           <div className="input-group">
-              <input type="number" step="0.01" value={value} onChange={inputData(value)}/>
+              <input type="number" step="0.01" value={value} onChange={function(e) { setValue(e.target.value) }}/>
               <button onClick={function() {setValue("")}}>クリア</button>
           </div>
           
