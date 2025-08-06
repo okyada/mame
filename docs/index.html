@@ -1,14 +1,288 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/mame/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mame</title>
-    <script type="module" crossorigin src="/mame/assets/index-DZyUUIyf.js"></script>
-    <link rel="stylesheet" crossorigin href="/mame/assets/index-D8b4DHJx.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>モダン計算機</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .calculator {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .calculator:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .calculate-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+
+        .clear-btn {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #e1e5e9;
+        }
+
+        .clear-btn:hover {
+            background: #e9ecef;
+            border-color: #ced4da;
+            transform: translateY(-2px);
+        }
+
+        .result {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #e1e5e9;
+            transition: all 0.3s ease;
+        }
+
+        .result.has-content {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .result.has-error {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .result-text {
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            word-break: break-all;
+        }
+
+        .placeholder-text {
+            color: #999;
+            font-style: italic;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-text {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @media (max-width: 480px) {
+            .calculator {
+                padding: 30px 20px;
+            }
+            
+            .title {
+                font-size: 24px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1 class="title">計算機</h1>
+        
+        <div class="input-group">
+            <label for="expression">数式を入力してください</label>
+            <input type="text" id="expression" placeholder="例: 2 + 3 * 4" />
+        </div>
+        
+        <div class="button-group">
+            <button class="calculate-btn" onclick="calculate()">計算</button>
+            <button class="clear-btn" onclick="clearAll()">クリア</button>
+        </div>
+        
+        <div class="result" id="result">
+            <div class="result-text placeholder-text">計算結果がここに表示されます</div>
+        </div>
+    </div>
+
+    <script>
+        const expressionInput = document.getElementById('expression');
+        const resultDiv = document.getElementById('result');
+        
+        // Enterキーで計算を実行
+        expressionInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculate();
+            }
+        });
+        
+        // 入力フィールドにフォーカスを当てる
+        window.onload = function() {
+            expressionInput.focus();
+        };
+
+        function calculate() {
+            const expression = expressionInput.value.trim();
+            
+            if (!expression) {
+                showResult('数式を入力してください', 'error');
+                return;
+            }
+            
+            try {
+                // 安全な数式評価のための正規表現チェック
+                const safeExpression = expression.replace(/[^0-9+\-*/().\s]/g, '');
+                
+                if (safeExpression !== expression) {
+                    showResult('無効な文字が含まれています', 'error');
+                    return;
+                }
+                
+                // 数式を評価
+                const result = Function(`"use strict"; return (${safeExpression})`)();
+                
+                if (isNaN(result) || !isFinite(result)) {
+                    showResult('計算エラー: 無効な結果', 'error');
+                } else {
+                    showResult(`= ${result}`, 'success');
+                }
+                
+            } catch (error) {
+                showResult('計算エラー: 無効な数式', 'error');
+            }
+        }
+        
+        function clearAll() {
+            expressionInput.value = '';
+            resultDiv.innerHTML = '<div class="result-text placeholder-text">計算結果がここに表示されます</div>';
+            resultDiv.className = 'result';
+            expressionInput.focus();
+        }
+        
+        function showResult(text, type) {
+            const resultText = document.createElement('div');
+            resultText.className = 'result-text';
+            resultText.textContent = text;
+            
+            resultDiv.innerHTML = '';
+            resultDiv.appendChild(resultText);
+            
+            // スタイルを適用
+            if (type === 'error') {
+                resultDiv.className = 'result has-error';
+            } else if (type === 'success') {
+                resultDiv.className = 'result has-content';
+            } else {
+                resultDiv.className = 'result';
+            }
+        }
+    </script>
+</body>
 </html>
