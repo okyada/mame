@@ -8,12 +8,13 @@ function App() {
 
   return (
     <>
-      <h1>Mame</h1>
+      <h1>豆計算</h1>
       <div className="card">
         <input value={value} onChange={function(e) { setValue(e.target.value) }}/>
+        <button onClick={function() {setValue("")}}>クリア</button>
       </div>
       <div>
-        {value} × 4.69 = {(4.69 * Number(value)).toFixed(2)}
+        4.69 × {value} = {(4.69 * Number(value)).toFixed(2)}
       </div>
     </>
   )

@@ -198,12 +198,11 @@
         <h1 class="title">計算機</h1>
         
         <div class="input-group">
-            <label for="expression">数式を入力してください</label>
-            <input type="text" id="expression" placeholder="例: 2 + 3 * 4" />
+            <label for="expression">数字を入力してください</label>
+            <input type="text" id="expression" placeholder="例: 1 1.5" onInput="calculate()"/>
         </div>
         
         <div class="button-group">
-            <button class="calculate-btn" onclick="calculate()">計算</button>
             <button class="clear-btn" onclick="clearAll()">クリア</button>
         </div>
         
@@ -232,26 +231,26 @@
             const expression = expressionInput.value.trim();
             
             if (!expression) {
-                showResult('数式を入力してください', 'error');
+                showResult('数字を入力してください', 'error');
                 return;
             }
             
             try {
                 // 安全な数式評価のための正規表現チェック
                 const safeExpression = expression.replace(/[^0-9+\-*/().\s]/g, '');
-                
+
                 if (safeExpression !== expression) {
                     showResult('無効な文字が含まれています', 'error');
                     return;
                 }
-                
+
                 // 数式を評価
-                const result = Function(`"use strict"; return (${safeExpression})`)();
+                const result = safeExpression * 46.15;
                 
                 if (isNaN(result) || !isFinite(result)) {
                     showResult('計算エラー: 無効な結果', 'error');
                 } else {
-                    showResult(`= ${result}`, 'success');
+                    showResult(`46.15 × ${safeExpression} = ${result}`, 'success');
                 }
                 
             } catch (error) {
