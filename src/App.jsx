@@ -26,8 +26,8 @@ function App() {
     <>
       <div className="calculator">
           <div className="input-group">
-              <input placeholder="豆の量" style={{"width": "50%"}} type="number" step="0.01" value={value} onChange={function(e) { inputData(e.target.value) }}/>
-              <button onClick={function() {clear()}}>クリア</button>
+              <input placeholder="豆の量" style={{"width": "60%"}} type="number" step="0.01" value={value} onChange={function(e) { inputData(e.target.value) }}/>
+              <button onClick={function() {clear()}}>C</button>
           </div>
           
           <div className="result" id="result">
