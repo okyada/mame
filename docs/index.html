@@ -196,7 +196,8 @@
 <body>
     <div class="calculator">
         <div class="input-group">
-            <input type="text" id="expression" placeholder="数字を入力してください" onInput="calculate()"/>
+            <input type="text" id="mame" placeholder="豆の量" onInput="calculate()"/>
+            <input type="text" id="saji" placeholder="匙" onInput="calculate()"/>
         </div>
         
         <div class="button-group">
@@ -209,45 +210,24 @@
     </div>
 
     <script>
-        const expressionInput = document.getElementById('expression');
+        const mame = document.getElementById('mame');
+        const saji = document.getElementById('saji');
         const resultDiv = document.getElementById('result');
-        
-        // Enterキーで計算を実行
-        expressionInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                calculate();
-            }
-        });
         
         // 入力フィールドにフォーカスを当てる
         window.onload = function() {
-            expressionInput.focus();
+            mame.focus();
         };
 
         function calculate() {
-            const expression = expressionInput.value.trim();
-            
-            if (!expression) {
-                showResult('数字を入力してください', 'error');
-                return;
-            }
-            
             try {
-                // 安全な数式評価のための正規表現チェック
-                const safeExpression = expression.replace(/[^0-9+\-*/().\s]/g, '');
-
-                if (safeExpression !== expression) {
-                    showResult('無効な文字が含まれています', 'error');
-                    return;
-                }
-
                 // 数式を評価
-                const result = safeExpression * 46.15;
-                
+                const result = Number(mame.value) * Number(saji.value);
+                console.log(result);
                 if (isNaN(result) || !isFinite(result)) {
                     showResult('計算エラー: 無効な結果', 'error');
                 } else {
-                    showResult(`46.15 × ${safeExpression} = ${result}`, 'success');
+                    showResult(`${Number(mame.value)} × ${Number(saji.value)} = ${result.toFixed(2)}`, 'success');
                 }
                 
             } catch (error) {
@@ -256,10 +236,11 @@
         }
         
         function clearAll() {
-            expressionInput.value = '';
+            mame.value = '';
+            saji.value = '';
             resultDiv.innerHTML = '<div class="result-text placeholder-text">計算結果がここに表示されます</div>';
             resultDiv.className = 'result';
-            expressionInput.focus();
+            mame.focus();
         }
         
         function showResult(text, type) {
