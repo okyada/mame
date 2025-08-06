@@ -12,27 +12,40 @@ function App() {
     var arr = [];
     var water = Number(value) * 3;
     for(var i = 1; i <= 5; i++) {
-      arr.push(`${water} x ${i} = ${(water * i).toFixed(2)} `)
+      arr.push({"value": water.toFixed(2), "index": i, "calc": (water * i).toFixed(2)})
     }
     setResults(arr);
+  }
+
+  function clear() {
+    setValue("")
+    setResults([])
   }
 
   return (
     <>
       <div className="calculator">
           <div className="input-group">
-              <input type="number" step="0.01" value={value} onChange={function(e) { setValue(e.target.value) }}/>
-              <button onClick={function() {setValue("")}}>クリア</button>
+              <input type="number" step="0.01" value={value} onChange={function(e) { inputData(e.target.value) }}/>
+              <button onClick={function() {clear()}}>クリア</button>
           </div>
           
           <div className="result" id="result">
             <div className="card">
               <table>
-                {results.map(result => (
-                  <tr>
-                    <td>{result}</td>
-                  </tr>
-                ))}
+                <tbody>
+                  {results.map(result => (
+                    <tr key={result.index}>
+                      <td>{result.index}</td>
+                      <td>杯目</td>
+                      <td>{result.value}</td>
+                      <td>×</td>
+                      <td>{result.index}</td>
+                      <td>=</td>
+                      <td align="right">{result.calc}</td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
             </div>            
           </div>
