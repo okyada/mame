@@ -26,7 +26,7 @@ function App() {
     <>
       <div className="calculator">
           <div className="input-group">
-              <input type="number" step="0.01" value={value} onChange={function(e) { inputData(e.target.value) }}/>
+              <input placeholder="豆の量" style={{"width": "50%"}} type="number" step="0.01" value={value} onChange={function(e) { inputData(e.target.value) }}/>
               <button onClick={function() {clear()}}>クリア</button>
           </div>
           
@@ -38,10 +38,6 @@ function App() {
                     <tr key={result.index}>
                       <td>{result.index}</td>
                       <td>杯目</td>
-                      <td>{result.value}</td>
-                      <td>×</td>
-                      <td>{result.index}</td>
-                      <td>=</td>
                       <td align="right">{result.calc}</td>
                     </tr>
                   ))}
