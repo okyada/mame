@@ -17,7 +17,6 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
             padding: 20px;
         }
 
@@ -63,7 +62,6 @@
         }
 
         input[type="text"] {
-            width: 100%;
             padding: 15px 20px;
             border: 2px solid #e1e5e9;
             border-radius: 12px;
@@ -88,7 +86,6 @@
         }
 
         button {
-            flex: 1;
             padding: 15px 25px;
             border: none;
             border-radius: 12px;
@@ -196,12 +193,10 @@
 <body>
     <div class="calculator">
         <div class="input-group">
-            <input type="text" id="mame" placeholder="豆の量" onInput="calculate()"/>
-            <input type="text" id="saji" placeholder="匙" onInput="calculate()"/>
-        </div>
-        
-        <div class="button-group">
-            <button class="clear-btn" onclick="clearAll()">クリア</button>
+            <input type="text" id="mame" placeholder="豆の量" style="width: 40%;" onInput="calculate()"/>
+            ×
+            <input type="text" id="saji" placeholder="匙" style="width: 20%;" onInput="calculate()"/>
+            <button class="clear-btn" onclick="clearAll()">C</button>
         </div>
         
         <div class="result" id="result">
@@ -223,7 +218,6 @@
             try {
                 // 数式を評価
                 const result = Number(mame.value) * Number(saji.value);
-                console.log(result);
                 if (isNaN(result) || !isFinite(result)) {
                     showResult('計算エラー: 無効な結果', 'error');
                 } else {
