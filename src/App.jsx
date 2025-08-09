@@ -30,21 +30,14 @@ function App() {
               <button onClick={function() {clear()}}>C</button>
           </div>
           
+          {results.map(result => (
           <div className="result" id="result">
-            <div className="card">
-              <table>
-                <tbody>
-                  {results.map(result => (
-                    <tr key={result.index}>
-                      <td>{result.index}</td>
-                      <td>杯目</td>
-                      <td align="right">{result.calc}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>            
+              <div className="card" key={result.index}>
+                {result.index} &nbsp; &nbsp; {result.calc}
+              </div>
           </div>
+              ))}
+
       </div>
 
     </>
